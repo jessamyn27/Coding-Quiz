@@ -11,16 +11,15 @@ var oneHtml = document.querySelector("#oneHtml");
 var twoHtml = document.querySelector("#twoHtml");
 var threeHtml = document.querySelector("#threeHtml");
 var fourHtml = document.querySelector("#fourHtml");
-
+var timerCount = document.querySelector("#timerCount");
 
 // also global variables that we'll use for the logic below like functions and if/else stmnts
 // var  = "";
 // var  = 0;
 // var  = 0;
 // var  = 0;
-var isWin = false;
-var timer;
-var timerCount;
+// var isWin = false;
+var timeLeft = 60;
 
 // Arrays used to create blanks and letters on screen
 var questions = [questionInsect, questionSquid, questionCow, questionOctopus];
@@ -33,7 +32,7 @@ var questionInsect = {
     answer1: 4,
     answer2: 10,
     answer3: 2,
-    answer4: 6 //correct answer
+    answer4: 6 //correct answer that is our fourHTML
 };
 
 var questionSquid = {
@@ -61,6 +60,8 @@ var questionOctopus = {
 };
 
 // WHEN I click the start button
+// need a button 
+// need a click event listener that does something when button is clicked
 startButtonHtml.addEventListener("click", function() {
     quizQuestionHtml.innerHTML = questionInsect.question
     console.log(questionInsect.question);
@@ -71,21 +72,70 @@ startButtonHtml.addEventListener("click", function() {
     threeHtml.innerHTML = questionInsect.answer3;
     console.log(questionInsect.answer3);
     fourHtml.innerHTML = questionInsect.answer4;
-});
-// need a button 
-// need a click event listener that does something when button is clicked
+    console.log(questionInsect.answer4);
 
-// THEN a timer starts a countdown from a specified time (60sec) and I am presented with a question
-// timer function to start on that click event listener
-// and show a question from our array of question/answer objects 
+    countdown();
+    console.log(timeLeft);
+});
 
 // WHEN I answer a question
 // user has a list of options that are buttons to choose from and one is "correct" rest are "incorrect"
-
 // THEN I am presented with another question
 // after user clicks, a pop up shows them if it's correct or incorrect
 // also after user click, a new question with new option buttons to choose from comes up
 // also I keep track of correct/incorrect score to present at user at the end of the quiz
+quizAnswers.addEventListener("click", function(event) {
+    var clickAnswer = event.target;
+
+    // Checks if element is a button
+    if (quizAnswers.matches("button") === true) {
+        console.log(clickAnswer + 'cool, a button was clicked in my quizAnswers div...')
+            // if person clicks questionInsect.answer4 add a plus one to a var called right answer 
+    } else {
+        console.log('button not working try again')
+            // if users clisk ... then add a plus to wrong answer var
+    }
+    quizQuestionHtml.innerHTML = questionInsect.question
+    console.log(questionInsect.question);
+    oneHtml.innerHTML = questionInsect.answer1;
+    console.log(questionInsect.answer1);
+    twoHtml.innerHTML = questionInsect.answer2;
+    console.log(questionInsect.answer2);
+    threeHtml.innerHTML = questionInsect.answer3;
+    console.log(questionInsect.answer3);
+    fourHtml.innerHTML = questionInsect.answer4;
+    console.log(questionInsect.answer4);
+});
+
+
+// THEN a timer starts a countdown from a specified time (60sec) and I am presented with a question
+// timer function to start on that click event listener
+// and show a question from our array of question/answer objects 
+// Timer that counts down from 5
+function countdown() {
+    // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
+    var timeInterval = setInterval(function() {
+        // As long as the `timeLeft` is greater than 1
+        if (timeLeft > 1) {
+            // Set the `textContent` of `timerEl` to show the remaining seconds
+            timerCount.innerHTML = timeLeft + ' seconds remaining';
+            // Decrement `timeLeft` by 1
+            timeLeft--;
+        } else if (timeLeft === 1) {
+            // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
+            timerCount.innerHTML = timeLeft + ' second remaining HURRY UP';
+            timeLeft--;
+        } else {
+            // Once `timeLeft` gets to 0, set `timerEl` to an empty string
+            timerCount.innerHTML = '';
+            // Use `clearInterval()` to stop the timer
+            clearInterval(timeInterval);
+            // Call the `displayMessage()` function
+        }
+    }, 1000);
+}
+
+
 
 // WHEN i answer a question incorrectly time is subtracted from the clock
 // user incorrect and correct answer is stored to present user at end of quiz
