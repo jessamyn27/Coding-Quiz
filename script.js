@@ -7,29 +7,27 @@ var startButtonHtml = document.querySelector("#startButton");
 var quizContainerHtml = document.querySelector("#quizContainer");
 var quizQuestionHtml = document.querySelector("#quizQuestion"); //here's where the question goes
 var quizAnswersHtml = document.querySelector("#quizAnswers"); // here's where the 4 option buttons go
-var oneHtml = document.querySelector("#oneHtml");
-var twoHtml = document.querySelector("#twoHtml");
-var threeHtml = document.querySelector("#threeHtml");
-var fourHtml = document.querySelector("#fourHtml");
-var timerCount = document.querySelector("#timerCount");
+var buttonOneHtml = document.querySelector("#oneHtml");
+var buttonTwoHtml = document.querySelector("#twoHtml");
+var buttonThreeHtml = document.querySelector("#threeHtml");
+var buttonFourHtml = document.querySelector("#fourHtml");
+var timerCountHtml = document.querySelector("#timerCount");
 
 // also global variables that we'll use for the logic below like functions and if/else stmnts
-// var  = "";
-// var  = 0;
-// var  = 0;
-// var  = 0;
-// var isWin = false;
+
+// if user get it wrong - 10 from correctAnswers variable
+var finalScore = 100;
 var timeLeft = 60;
 
 // Arrays used to create blanks and letters on screen
-var questions = [questionInsect, questionSquid, questionCow, questionOctopus];
+// var questions = [questionInsect, questionSquid, questionCow, questionOctopus];
 // var answersInsects = ['1','2','3','6'];
 // var = [];
 // var = [];
 
 var questionInsect = {
-    question: 'how many legs does an insect have?',
-    answer1: 4,
+    question: 'How many legs does an insect have?',
+    answer1: 'insects dont have legs',
     answer2: 10,
     answer3: 2,
     answer4: 6 //correct answer that is our fourHTML
@@ -65,17 +63,16 @@ var questionOctopus = {
 startButtonHtml.addEventListener("click", function() {
     quizQuestionHtml.innerHTML = questionInsect.question
     console.log(questionInsect.question);
-    oneHtml.innerHTML = questionInsect.answer1;
+    buttonOneHtml.innerHTML = questionInsect.answer1;
     console.log(questionInsect.answer1);
-    twoHtml.innerHTML = questionInsect.answer2;
+    buttonTwoHtml.innerHTML = questionInsect.answer2;
     console.log(questionInsect.answer2);
-    threeHtml.innerHTML = questionInsect.answer3;
+    buttonThreeHtml.innerHTML = questionInsect.answer3;
     console.log(questionInsect.answer3);
-    fourHtml.innerHTML = questionInsect.answer4;
+    buttonFourHtml.innerHTML = questionInsect.answer4;
     console.log(questionInsect.answer4);
 
     countdown();
-    console.log(timeLeft);
 });
 
 // WHEN I answer a question
@@ -84,29 +81,32 @@ startButtonHtml.addEventListener("click", function() {
 // after user clicks, a pop up shows them if it's correct or incorrect
 // also after user click, a new question with new option buttons to choose from comes up
 // also I keep track of correct/incorrect score to present at user at the end of the quiz
-quizAnswers.addEventListener("click", function(event) {
-    var clickAnswer = event.target;
+console.log(finalScore + "score before user chooses an answer")
 
+quizAnswersHtml.addEventListener("click", function(event) { //listens to 
+    var targetHtmlElement = event.target;
     // Checks if element is a button
-    if (quizAnswers.matches("button") === true) {
-        console.log(clickAnswer + 'cool, a button was clicked in my quizAnswers div...')
-            // if person clicks questionInsect.answer4 add a plus one to a var called right answer 
+    // if (targetHtmlElement.matches("button") === true) {
+    //     console.log(targetHtmlElement + ' cool, an answer button was clicked in my quizAnswers div...')
+    // if person clicks questionInsect.answer4 add a plus one to a var called right answer 
+    // if they click the button that matches the right answer, show "you got it right!"
+    if (targetHtmlElement.matches('#fourHtml')) {
+        console.log('correct answer!');
+        var correctAnswerMsg = document.createElement("div");
+        correctAnswerMsg.textContent = "Correct! ✔️";
+        document.getElementById('quizContainer').appendChild(correctAnswerMsg);
+        // add plus one to correct array
     } else {
-        console.log('button not working try again')
-            // if users clisk ... then add a plus to wrong answer var
+        console.log('oops, that is not correct')
+        var correctAnswerMsg = document.createElement("div");
+        correctAnswerMsg.textContent = "Wrong! Better luck next time.";
+        document.getElementById('quizContainer').appendChild(correctAnswerMsg);
+        // take 10 points away from user and keep track of that in our finalScore variable
+        finalScore = (finalScore - 10);
+        console.log(finalScore + "score after user gets it wrong")
     }
-    quizQuestionHtml.innerHTML = questionInsect.question
-    console.log(questionInsect.question);
-    oneHtml.innerHTML = questionInsect.answer1;
-    console.log(questionInsect.answer1);
-    twoHtml.innerHTML = questionInsect.answer2;
-    console.log(questionInsect.answer2);
-    threeHtml.innerHTML = questionInsect.answer3;
-    console.log(questionInsect.answer3);
-    fourHtml.innerHTML = questionInsect.answer4;
-    console.log(questionInsect.answer4);
 });
-
+// use appendList or appendChild div that shows the score
 
 // THEN a timer starts a countdown from a specified time (60sec) and I am presented with a question
 // timer function to start on that click event listener
@@ -118,16 +118,16 @@ function countdown() {
         // As long as the `timeLeft` is greater than 1
         if (timeLeft > 1) {
             // Set the `textContent` of `timerEl` to show the remaining seconds
-            timerCount.innerHTML = timeLeft + ' seconds remaining';
+            timerCountHtml.innerHTML = timeLeft + ' seconds remaining';
             // Decrement `timeLeft` by 1
             timeLeft--;
         } else if (timeLeft === 1) {
             // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
-            timerCount.innerHTML = timeLeft + ' second remaining HURRY UP';
+            timerCountHtml.innerHTML = timeLeft + ' second remaining HURRY UP';
             timeLeft--;
         } else {
             // Once `timeLeft` gets to 0, set `timerEl` to an empty string
-            timerCount.innerHTML = '';
+            timerCountHtml.innerHTML = '';
             // Use `clearInterval()` to stop the timer
             clearInterval(timeInterval);
             // Call the `displayMessage()` function
