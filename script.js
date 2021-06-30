@@ -8,6 +8,10 @@ var buttonTwoHtml = document.querySelector("#twoHtml");
 var buttonThreeHtml = document.querySelector("#threeHtml");
 var buttonFourHtml = document.querySelector("#fourHtml");
 var timerCountHtml = document.querySelector("#timerCount");
+var scoreHtml = document.querySelector("#finalScore");
+var inputHtml = document.querySelector("#nameInput");
+var scoreButtonHtml = document.querySelector("#scoreButton");
+var scoreboardHtml = document.querySelector("#scoreboard");
 
 // 4 question/answer objects
 var questionInsect = {
@@ -15,7 +19,7 @@ var questionInsect = {
     answer1: 7,
     answer2: 8,
     answer3: 1000,
-    answer4: 6 //correct answer that is our fourHTML
+    answer4: 6 //correct answer 
 };
 var questionSquid = {
     question: 'how many tentacles does a squid have?',
@@ -39,7 +43,6 @@ var questionOctopus = {
     answer4: 30
 };
 
-// also global variables that we'll use for the logic below like functions and if/else stmnts
 var finalScore = 100;
 var timeLeft = 60;
 var i = 0;
@@ -48,9 +51,29 @@ var i = 0;
 var questionAnswerArray = [questionInsect, questionSquid, questionCow, questionOctopus];
 // array of the one correct answer
 var correctAnswerArray = [questionAnswerArray[0].answer4, questionAnswerArray[1].answer2, questionAnswerArray[2].answer1, questionAnswerArray[3].answer3];
-//var showQuestionAnswersArray = [showQuestionAnswer1, showQuestionAnswer2, showQuestionAnswer3, showQuestionAnswer4]
+var keepingScoreArray = [];
+//var keepingNameArray = [];
 
-// WHEN I click the start button
+var scoreBoard = {
+    name: inputHtml.value,
+    score: finalScore
+}
+
+function getLocal(keepingScoreArray) {
+    if (localStorage.getItem("final score") === null) {
+        return keepingScoreArray;
+    } else {
+        return JSON.parse(localStorage.getItem("final score"));
+    }
+}
+
+function sortScore(keepingScoreArray) {
+    keepingScoreArray = keepingScoreArray.sort(function(a, b) { return a.scoreBoard - b.scoreBoard });
+    keepingScoreArray = keepingScoreArray.reverse();
+    return keepingScoreArray;
+}
+
+// WHEN I click the start button...
 startButtonHtml.addEventListener("click", function(event) {
     countdown();
     quizQuestionHtml.innerHTML = questionAnswerArray[i].question;
@@ -60,84 +83,100 @@ startButtonHtml.addEventListener("click", function(event) {
     buttonFourHtml.innerHTML = questionAnswerArray[i].answer4;
 });
 
+// When I click an answer button...
 quizAnswersHtml.addEventListener("click", function(event) {
     var targetHtmlElement = event.target;
+    event.stopPropagation();
     if (((targetHtmlElement.matches("#fourHtml")) && (buttonFourHtml.innerHTML == correctAnswerArray[0])) ||
         ((targetHtmlElement.matches("#twoHtml")) && (buttonTwoHtml.innerHTML == correctAnswerArray[1])) ||
         ((targetHtmlElement.matches("#oneHtml")) && (buttonOneHtml.innerHTML == correctAnswerArray[2])) ||
         ((targetHtmlElement.matches("#threeHtml")) && (buttonThreeHtml.innerHTML == correctAnswerArray[3]))) {
 
         var correctAnswerMsg = document.createElement("div");
-        correctAnswerMsg.innerHTML = "you got question " + (i + 1) + " correct! ✔️";
+        correctAnswerMsg.innerHTML = "you got question " + (i + 1) + " correct! 🌈";
         document.getElementById('quizContainer').appendChild(correctAnswerMsg);
 
         setTimeout(function() {
             correctAnswerMsg.innerHTML = '';
         }, 1000);
 
-
     } else {
         //console.log('oops, that is not correct')
-
         var wrongAnswerMsg = document.createElement("div");
-        wrongAnswerMsg.textContent = "dang it! the correct answer to question " + i + " was " + questionAnswerArray[i].answer4;
+        wrongAnswerMsg.textContent = "dang it! ya got " + (i + 1) + "wrong 🦥";
         document.getElementById('quizContainer').appendChild(wrongAnswerMsg);
-
+        // user gets it wrong and loses 15 points
+        timeLeft = (timeLeft - 15)
+        finalScore = (finalScore - 15);
         setTimeout(function() {
             wrongAnswerMsg.innerHTML = '';
         }, 1000);
-
         // take 10 points away from user and keep track of that in our finalScore variable
-        finalScore = (finalScore - 10);
-        console.log(finalScore + "score after user gets it wrong");
-
-
     }
-    i++
+
+    i++;
+
+    if (questionAnswerArray.length == i) {
+        scoreHtml.innerHTML = "you\'re done! 🦄 🐅 🦔 your score is " + finalScore + "%"
+        clearInterval(timeInterval);
+
+        scoreButtonHtml.addEventListener("click", function() {
+            keepingScoreArray = getLocal(keepingScoreArray);
+            var scoreBoard = {
+                name: inputHtml.value,
+                score: finalScore
+            }
+
+            keepingScoreArray.push(scoreButtonHtml);
+            sortScore(keepingScoreArray);
+
+            for (var i = 0; i < keepingScoreArray.length; i++) {
+                var j = keepingScoreArray[i];
+
+                var newScoreLi = document.createElement("li");
+                newScoreLi.textContent = "score: " + j.score + "name: " + j.name;
+                scoreboardHtml.appendChild(newScoreLi);
+
+            }
+
+
+            // keepingScore.push(finalScore)
+
+            localStorage.setItem("final score", JSON.stringify(keepingScoreArray));
+
+            // var scoreBoardScore = JSON.parse(localStorage.getItem("final score"));
+
+
+            // console.log(finalScore)
+            // console.log(inputHtml.value)
+        });
+    }
     quizQuestionHtml.innerHTML = questionAnswerArray[i].question;
     buttonOneHtml.innerHTML = questionAnswerArray[i].answer1;
     buttonTwoHtml.innerHTML = questionAnswerArray[i].answer2;
     buttonThreeHtml.innerHTML = questionAnswerArray[i].answer3;
     buttonFourHtml.innerHTML = questionAnswerArray[i].answer4;
-
-
-
-    if (quizQuestionHtml.innerHTML = questionAnswerArray[3].question) {
-        var scoreBox = document.createElement("div");
-        scoreBox.innerHTML = "you did it! your score is " + finalScore + "%";
-        document.getElementById('scoreContainer').appendChild(scoreBox);
-    }
 });
-console.log(finalScore + " score after answering")
 
-// use appendList or appendChild div that shows the score
+var timeInterval = '';
 
-// THEN a timer starts a countdown from a specified time (60sec) and I am presented with a question
-// timer function to start on that click event listener
-// and show a question from our array of question/answer objects 
-// Timer that counts down from 5
 function countdown() {
-    // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
-    var timeInterval = setInterval(function() {
-        // As long as the `timeLeft` is greater than 1
+    timeInterval = setInterval(function() {
         if (timeLeft > 1) {
-            // Set the `textContent` of `timerEl` to show the remaining seconds
             timerCountHtml.innerHTML = timeLeft + ' seconds remaining';
-            // Decrement `timeLeft` by 1
             timeLeft--;
         } else if (timeLeft === 1) {
-            // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
             timerCountHtml.innerHTML = timeLeft + ' second remaining HURRY UP';
             timeLeft--;
         } else {
-            // Once `timeLeft` gets to 0, set `timerEl` to an empty string
             timerCountHtml.innerHTML = '0';
-            // Use `clearInterval()` to stop the timer
             clearInterval(timeInterval);
-            // Call the `displayMessage()` function
         }
     }, 1000);
 }
+
+
+
 
 
 
