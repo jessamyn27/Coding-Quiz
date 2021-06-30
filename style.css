@@ -21,22 +21,20 @@
             height: 150px;
             border: 1px solid black;
         }
-        /*         
-        .reset-button {
+        /* .reset-button {
             font-size: 16px;
             height: 30px;
             line-height: 8px;
             margin-top: 20px;
-        }
-        
-        .win-loss-container {
+        } */
+        /* .win-loss-container {
             display: flex;
             justify-content: space-between;
             margin-top: 16px;
-        }
+        } */
         
         button {
-            background: radial-gradient(circle, rgba(240, 230, 140, 1) 0%, rgba(187, 96, 33, 0.9542191876750701) 100%);
+            background: radial-gradient(circle, rgb(218, 156, 209) 0%, rgba(180, 122, 80, 0.954) 100%);
             border-radius: 8px;
             color: #13293d;
             cursor: pointer;
@@ -140,4 +138,4 @@
             .timer {
                 height: 200px;
             }
-        } */
+        }

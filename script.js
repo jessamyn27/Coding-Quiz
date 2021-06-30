@@ -52,7 +52,6 @@ var questionAnswerArray = [questionInsect, questionSquid, questionCow, questionO
 // array of the one correct answer
 var correctAnswerArray = [questionAnswerArray[0].answer4, questionAnswerArray[1].answer2, questionAnswerArray[2].answer1, questionAnswerArray[3].answer3];
 var keepingScoreArray = [];
-//var keepingNameArray = [];
 
 var scoreBoard = {
     name: inputHtml.value,
@@ -117,8 +116,10 @@ quizAnswersHtml.addEventListener("click", function(event) {
     i++;
 
     if (questionAnswerArray.length == i) {
-        scoreHtml.innerHTML = "you\'re done! 🦄 🐅 🦔 your score is " + finalScore + "%"
+        scoreHtml.innerHTML = "you\'re done! 🦄 🐅 🦔  your score is " + finalScore + "%"
         clearInterval(timeInterval);
+
+        "score: " + j.score
 
         scoreButtonHtml.addEventListener("click", function() {
             keepingScoreArray = getLocal(keepingScoreArray);
@@ -126,6 +127,8 @@ quizAnswersHtml.addEventListener("click", function(event) {
                 name: inputHtml.value,
                 score: finalScore
             }
+            quizContainerHtml display: none;
+
 
             keepingScoreArray.push(scoreBoard);
             keepingScoreArray = sortScore(keepingScoreArray);
@@ -134,7 +137,7 @@ quizAnswersHtml.addEventListener("click", function(event) {
                 var j = keepingScoreArray[i];
 
                 var newScoreLi = document.createElement("li");
-                newScoreLi.textContent = "score: " + j.score + "name: " + j.name;
+                newScoreLi.textContent = "name: " + j.name + "  |  score: " + j.score;
                 scoreboardHtml.appendChild(newScoreLi);
 
             }
@@ -143,6 +146,7 @@ quizAnswersHtml.addEventListener("click", function(event) {
             // keepingScore.push(finalScore)
 
             localStorage.setItem("final score", JSON.stringify(keepingScoreArray));
+
 
             // var scoreBoardScore = JSON.parse(localStorage.getItem("final score"));
 
@@ -174,11 +178,6 @@ function countdown() {
         }
     }, 1000);
 }
-
-
-
-
-
 
 // WHEN i answer a question incorrectly time is subtracted from the clock
 // user incorrect and correct answer is stored to present user at end of quiz
