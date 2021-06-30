@@ -127,8 +127,8 @@ quizAnswersHtml.addEventListener("click", function(event) {
                 score: finalScore
             }
 
-            keepingScoreArray.push(scoreButtonHtml);
-            sortScore(keepingScoreArray);
+            keepingScoreArray.push(scoreBoard);
+            keepingScoreArray = sortScore(keepingScoreArray);
 
             for (var i = 0; i < keepingScoreArray.length; i++) {
                 var j = keepingScoreArray[i];
