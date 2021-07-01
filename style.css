@@ -36,13 +36,14 @@ section {
 }
 
 input {
-    background: transparent;
+    background: rgba(166, 208, 228, 0.8);
     height: 50px;
     margin-top: 20px;
     margin-left: 20%;
     margin-right: 20%;
     font-size: 20px;
-    color: rgb(142, 186, 223);
+    color: rgb(59, 85, 105);
+    text-align: center;
 }
 
 li {
