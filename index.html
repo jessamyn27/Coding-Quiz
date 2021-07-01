@@ -11,42 +11,54 @@
 
 <body>
     <header>
-        <div>Scoreboard:
+        <div>
+            <h3 id="scoreboardTitle"> Scoreboard</h3>
+
             <ul id="scoreboard">
 
             </ul>
         </div>
         <h1>Quiz Me</h1>
         <button id="startButton">Start</button>
+        <button id="reStartButton">Restart</button>
+
     </header>
     <main>
-        <section id="quizContainer">
-            <div id="quizQuestion">
+        <main id="gameContainer">
+            <section id="quizContainer">
+                <div id="quizQuestion">
+
+                </div>
+                <div id="quizAnswers">
+                    <button class="answerButtons" id="oneHtml"></button>
+                    <button class="answerButtons" id="twoHtml"></button>
+                    <button class="answerButtons" id="threeHtml"></button>
+                    <button class="answerButtons" id="fourHtml"></button>
+                </div>
+                <div id="timerContainer">
+                    <div>
+                        <div id="timerCount"> </div>
+                    </div>
+                </div>
+                <div id="scoreContainer">
+                    <div id="finalScore">
+                    </div>
+                    <div>Enter your name to save your score!</div>
+                    <div>
+                        <input id="nameInput">
+                    </div>
+                    </input>
+                    <div>
+                        <button id="scoreButton">submit score</button>
+            </section>
+            </div>
 
             </div>
-            <div id="quizAnswers">
-                <button class="answerButtons" id="oneHtml"></button>
-                <button class="answerButtons" id="twoHtml"></button>
-                <button class="answerButtons" id="threeHtml"></button>
-                <button class="answerButtons" id="fourHtml"></button>
-            </div>
+            </section>
 
-        </section>
-        <section id="timerContainer">Timer
-            <div>
-                <div id="timerCount"> </div>
-            </div>
-        </section>
-        <section id="scoreContainer">
-            <div id="finalScore">
-            </div>
-            <div>Enter your name to save your score!</div>
-            <input id="nameInput">
-            </input>
-            <button id="scoreButton">submit score</button>
-        </section>
-    </main>
-    <script src="./script.js"></script>
+
+        </main>
+        <script src="./script.js"></script>
 </body>
 
 </html>
